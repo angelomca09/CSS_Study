@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>CSS Study</title>
+  </head>
+  <body>
+    <header>
+      <a href="../../index.html"> <span> < </span></a>
+      <span>CSS Study</span>
+    </header>
+    <div class="content">
+      <main id="main">
+        <canvas id="scene" style="border-radius: 10px"></canvas>
+      </main>
+      <script>
+        (function () {
+          var // Obtain a reference to the canvas element using its id.
+            htmlCanvas = document.getElementById("scene"),
+            // Obtain a graphics context on the canvas element for drawing.
+            context = htmlCanvas.getContext("2d");
+
+          // Start listening to resize events and draw canvas.
+          initialize();
+
+          function initialize() {
+            // Register an event listener to call the resizeCanvas() function
+            // each time the window is resized.
+            window.addEventListener("resize", resizeCanvas, false);
+            // Draw canvas border for the first time.
+            resizeCanvas();
+          }
+
+          // Display custom canvas. In this case it's a blue, 5 pixel
+          // border that resizes along with the browser window.
+          function redraw() {
+            const main = document.querySelector("#main");
+            context.strokeStyle = "blue";
+            context.lineWidth = "5";
+            context.strokeRect(0, 0, main.offsetWidth, main.offsetHeight);
+          }
+
+          // Runs each time the DOM window resize event fires.
+          // Resets the canvas dimensions to match window,
+          // then draws the new borders accordingly.
+          function resizeCanvas() {
+            const main = document.querySelector("#main");
+            htmlCanvas.width = main.offsetWidth;
+            htmlCanvas.height = main.offsetHeight;
+            redraw();
+          }
+        })();
+      </script>
+      <script>
+        window.onload = () => {
+          scene = document.getElementById("scene");
+          context = scene.getContext("2d");
+          setInterval(run, 1000 / 60);
+        };
+
+        drops = 300;
+        dropSpeedRatio = 5;
+        maxH = (scene.height / 2) * -1;
+        minW = 2;
+        maxW = 4;
+
+        raindrops = [];
+        for (var i = 0; i < drops; i++) {
+          raindrops.push({
+            x: Math.round(Math.random() * scene.width),
+            y: Math.round(Math.random() * maxH),
+            w: Math.round(minW + Math.random() * (maxW - minW)),
+            h: 50,
+          });
+        }
+
+        function run() {
+          context.fillStyle = "black";
+          context.fillRect(0, 0, scene.width, scene.height);
+
+          context.fillStyle = "SkyBlue";
+          for (var i = 0; i < raindrops.length; i++) {
+            const r = raindrops[i];
+
+            r.y += r.w * dropSpeedRatio;
+
+            context.fillRect(r.x, r.y, r.w, r.h);
+
+            if (r.y > scene.height) {
+              //TODO: reposiciona o pingo
+              r.y = Math.round(Math.random() * maxH);
+              r.x = Math.round(Math.random() * scene.width);
+            }
+          }
+        }
+      </script>
+    </div>
+  </body>
+</html>
