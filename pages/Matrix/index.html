@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>CSS Study</title>
+  </head>
+  <body>
+    <header>
+      <a href="../../index.html"> <span> < </span></a>
+      <span>CSS Study</span>
+    </header>
+    <div class="content">
+      <main id="main">
+        <canvas id="canv" style="border-radius: 10px"></canvas>
+        <script>
+          (function () {
+            var // Obtain a reference to the canvas element using its id.
+              htmlCanvas = document.getElementById("canv"),
+              // Obtain a graphics context on the canvas element for drawing.
+              context = htmlCanvas.getContext("2d");
+
+            // Start listening to resize events and draw canvas.
+            initialize();
+
+            function initialize() {
+              // Register an event listener to call the resizeCanvas() function
+              // each time the window is resized.
+              window.addEventListener("resize", resizeCanvas, false);
+              // Draw canvas border for the first time.
+              resizeCanvas();
+            }
+
+            // Display custom canvas. In this case it's a blue, 5 pixel
+            // border that resizes along with the browser window.
+            function redraw() {
+              context.strokeStyle = "blue";
+              context.lineWidth = "5";
+              context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+            }
+
+            // Runs each time the DOM window resize event fires.
+            // Resets the canvas dimensions to match window,
+            // then draws the new borders accordingly.
+            function resizeCanvas() {
+              const main = document.querySelector("#main");
+              console.dir(main);
+              htmlCanvas.width = main.offsetWidth;
+              htmlCanvas.height = main.offsetHeight;
+              redraw();
+            }
+          })();
+        </script>
+        <script>
+          const canvas = document.getElementById("canv");
+          const ctx = canvas.getContext("2d");
+          const cols = Math.floor(canvas.width / 20) + 1;
+          const yPos = Array(cols).fill(0);
+
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          function DesenhaMatrix() {
+            ctx.fillStyle = "#0001";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0f0";
+            ctx.font = "15px monospace";
+
+            yPos.forEach((y, ind) => {
+              const text = String.fromCharCode(Math.random() * 128);
+              const x = ind * 20;
+              ctx.fillText(text, x, y);
+
+              if (y > 100 + Math.random() * 10000) yPos[ind] = 0;
+              else yPos[ind] = y + 20;
+            });
+          }
+
+          setInterval(DesenhaMatrix, 50);
+        </script>
+      </main>
+    </div>
+  </body>
+</html>
